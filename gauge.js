@@ -22,13 +22,13 @@
 
 window.Gauge = function() {
    this.elemId      = arguments[0];
-   var params       = arguments[1]          || {};
-   this.needleColor = params['needleColor'] || 'black';
-   this.gaugeColor  = params['gaugeColor']  || 'lightblue';
+   var params       = arguments[1]       || {};
+   this.needleColor = params.needleColor || 'black';
+   this.gaugeColor  = params.gaugeColor  || 'lightblue';
 
-   this.min         = 0;
-   this.max         = 100;
-   this.value       = 0;
+   this.min         = params.min || 0;
+   this.max         = params.max || 100;
+   this.value       = params.val || 0;
    this.interval    = null;
 
    this.fromValue   = null;
