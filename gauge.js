@@ -1,54 +1,46 @@
-/*
-Copyright (c) 2010, ALAIN GILBERT.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. All advertising materials mentioning features or use of this software
-   must display the following acknowledgement:
-   This product includes software developed by ALAIN GILBERT.
-4. Neither the name of the ALAIN GILBERT nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY ALAIN GILBERT ''AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL ALAIN GILBERT BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+/**
+ * Copyright 2011,2012 Alain Gilbert <alain.gilbert.15@gmail.com>
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE. 
+ */
 
 window.Gauge = function() {
-   var params = arguments[1] !== undefined ? arguments[1] : {};
-   this.elemId = arguments[0];
-   this.needleColor = params['needleColor'] !== undefined ? params['needleColor'] : 'black';
-   this.gaugeColor = params['gaugeColor'] !== undefined ? params['gaugeColor'] : 'lightblue';
+   this.elemId      = arguments[0];
+   var params       = arguments[1]          || {};
+   this.needleColor = params['needleColor'] || 'black';
+   this.gaugeColor  = params['gaugeColor']  || 'lightblue';
 
-   this.min = 0;
-   this.max = 100;
-   this.value = 0;
-   this.interval = null;
+   this.min         = 0;
+   this.max         = 100;
+   this.value       = 0;
+   this.interval    = null;
 
-   this.fromValue = null;
-   this.newValue = null;
-   this.callback = null;
+   this.fromValue   = null;
+   this.newValue    = null;
+   this.callback    = null;
 
-   this.bindElems = [];
+   this.bindElems   = [];
 
-   this.canvas = document.getElementById(this.elemId);
-   this.width = this.canvas.width;
-   this.height = this.canvas.height;
-   this.ctx = this.canvas.getContext('2d');
+   this.canvas      = document.getElementById(this.elemId);
+   this.width       = this.canvas.width;
+   this.height      = this.canvas.height;
+   this.ctx         = this.canvas.getContext('2d');
    this.paint();
 };
 
@@ -60,9 +52,9 @@ Gauge.prototype.setValue = function(value, callback) {
    if (this.value == value) { return; }
    window.clearInterval(this.interval);
    this.fromValue = this.value;
-   this.newValue = value;
+   this.newValue  = value;
    this.startTime = new Date().getTime();
-   this.callback = callback;
+   this.callback  = callback;
    var self = this;
    this.interval = window.setInterval(function() {
       self.update();
@@ -73,7 +65,7 @@ Gauge.prototype.setValue = function(value, callback) {
 Gauge.prototype.update = function() {
    var duration = 2000;
    var effect = this.formulas['<>']( (new Date().getTime() - this.startTime) / duration )
-   if (new Date().getTime() - this.startTime <= duration) {
+   if (new Date().getTime() - this.startTime < duration) {
       this.value = ((this.newValue - this.fromValue) / duration) * (effect * duration) + this.fromValue;
       for (var i=0; i<this.bindElems.length; i++) {
          this.bindElems[i].innerHTML = Math.floor(this.value);
@@ -109,8 +101,8 @@ Gauge.prototype.paint = function() {
    // Draw needle
    var minAngle = -Math.PI/2+angle;
    var maxAngle = -Math.PI/2+angle + (Math.PI-(2*angle));
-   var diff = maxAngle - minAngle;
-   var pct = (this.value / this.max);
+   var diff     = maxAngle - minAngle;
+   var pct      = (this.value / this.max);
 
    this.ctx.save();
    this.ctx.translate(this.width/2, this.height);
