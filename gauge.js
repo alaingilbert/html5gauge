@@ -91,21 +91,18 @@ Gauge.prototype.paint = function() {
    this.ctx.beginPath();
    this.ctx.translate(this.width/2, this.height);
    var angle = Math.atan( (this.height/2) / (this.width/2) );
-   this.ctx.arc(0, 0, this.width/2, -Math.PI+angle, -angle);
-   this.ctx.arc(0, 0, this.width/2-45, -angle, -Math.PI+angle, true);
+   this.ctx.arc(0, 0, this.width/2, Math.PI+angle, -angle);
+   this.ctx.arc(0, 0, this.width/2-45, -angle, Math.PI+angle, true);
    this.ctx.closePath();
    this.ctx.fillStyle = this.gaugeColor;
    this.ctx.fill();
-   this.ctx.restore();
 
    // Draw needle
    var minAngle = -Math.PI/2+angle;
-   var maxAngle = -Math.PI/2+angle + (Math.PI-(2*angle));
+   var maxAngle = minAngle + (Math.PI-(2*angle));
    var diff     = maxAngle - minAngle;
    var pct      = (this.value / this.max);
 
-   this.ctx.save();
-   this.ctx.translate(this.width/2, this.height);
    this.ctx.rotate(pct * diff + minAngle);
 
    this.ctx.beginPath();
