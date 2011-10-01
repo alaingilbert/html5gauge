@@ -90,7 +90,7 @@ Gauge.prototype.paint = function() {
    this.ctx.save();
    this.ctx.beginPath();
    this.ctx.translate(this.width/2, this.height);
-   var angle = Math.atan( (this.height/2) / (this.width/2) );
+   var angle = Math.atan(this.height/this.width);
    this.ctx.arc(0, 0, this.width/2, Math.PI+angle, -angle);
    this.ctx.arc(0, 0, this.width/2-45, -angle, Math.PI+angle, true);
    this.ctx.closePath();
