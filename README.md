@@ -1,4 +1,4 @@
-#html5 Gauge
+# html5 Gauge
 
 A simple html5 canvas gauge.
 
